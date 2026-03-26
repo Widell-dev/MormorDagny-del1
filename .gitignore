@@ -1,0 +1,27 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+
+# User-specific files
+*.user
+*.suo
+
+# Logs
+*.log
+
+# SQLite database
+*.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Rider / JetBrains
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
