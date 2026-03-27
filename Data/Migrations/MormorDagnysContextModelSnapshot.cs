@@ -22,9 +22,6 @@ namespace MormorDagnys.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("PricePerKg")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ProductName")
                         .HasColumnType("TEXT");
 

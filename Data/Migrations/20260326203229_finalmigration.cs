@@ -5,7 +5,7 @@
 namespace MormorDagnys.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FinalMigration : Migration
+    public partial class finalmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,8 +16,7 @@ namespace MormorDagnys.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ProductName = table.Column<string>(type: "TEXT", nullable: true),
-                    PricePerKg = table.Column<decimal>(type: "TEXT", nullable: false)
+                    ProductName = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -4,7 +4,7 @@ namespace MormorDagnys.DTOs
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; }
-        public List<SupplierProductDTO> Suppliers { get; set; }
+        public List<GetSupplierProductDto> Suppliers { get; set; }
 
     }
 }

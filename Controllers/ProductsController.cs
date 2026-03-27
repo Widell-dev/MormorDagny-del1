@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MormorDagnys.Data;
 using Microsoft.EntityFrameworkCore;
 using MormorDagnys.Entities;
+using MormorDagnys.DTOs;
 
 namespace MormorDagnys.Controllers;
 
@@ -17,13 +18,14 @@ namespace MormorDagnys.Controllers;
         {
          p.Id,
          p.ProductName,
-         p.PricePerKg,
+         
          Suppliers = p.SupplierProducts
-            .Select(c => new
+            .Select(c => new GetSupplierProductDto
             {
-                c.SupplierId,
-                c.Supplier.SupplierName,
-                c.Supplier.Email
+                SupplierId = c.SupplierId,
+                SupplierName = c.Supplier.SupplierName,
+                Email = c.Supplier.Email,
+                PricePerKg = c.PricePerKg
             })
         }).ToListAsync();
         return Ok(products);
@@ -33,19 +35,20 @@ namespace MormorDagnys.Controllers;
     {
         var product = await context.Products
         .Where(c => c.Id == id)
-        .Select(p => new
+        .Select(p => new ProductDTO
         {
-            p.Id,
-            p.PricePerKg,
-            p.ProductName,
-
-            Supplier= p.SupplierProducts
-            .Select(sp => new
+            ProductId = p.Id,
+            ProductName = p.ProductName,
+            Suppliers = p.SupplierProducts
+            .Select(sp => new GetSupplierProductDto
             {
-                sp.SupplierId,
-                sp.Supplier.SupplierName,
-                sp.PricePerKg
+                SupplierId = sp.SupplierId,
+                SupplierName = sp.Supplier.SupplierName,
+                Email = sp.Supplier.Email,
+                PricePerKg = sp.PricePerKg
             })
+            .ToList()
+            
         })
         .SingleOrDefaultAsync();
         if(product is not null)

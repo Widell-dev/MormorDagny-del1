@@ -41,16 +41,16 @@ public class SeedData
         return;
         var products = new List<Product>
         {
-            new() {ProductName = "Mjöl", PricePerKg = 22},
-            new() {ProductName = "Socker", PricePerKg = 32},
-            new() {ProductName = "Bakpulver", PricePerKg = 38},
-            new() {ProductName = "Smör", PricePerKg = 89},
-            new() {ProductName = "Vaniljsocker", PricePerKg = 54},
+            new() {ProductName = "Mjöl"},
+            new() {ProductName = "Socker"},
+            new() {ProductName = "Bakpulver"},
+            new() {ProductName = "Smör"},
+            new() {ProductName = "Vaniljsocker"},
         };
         context.Products.AddRange(products);
         await context.SaveChangesAsync();
     }
-    private async Task SeedSupplierProducts(MormorDagnysContext context)
+    private static async Task SeedSupplierProducts(MormorDagnysContext context)
     {
         if (context.SupplierProducts.Any()) return;
 
@@ -59,12 +59,12 @@ public class SeedData
 
         var supplierProducts = new List<SupplierProduct>
         {
-            new() { SupplierId = suppliers[0].Id, ProductId = products[0].Id, PricePerKg = products[0].PricePerKg },
-            new() { SupplierId = suppliers[0].Id, ProductId = products[1].Id, PricePerKg = products[1].PricePerKg},
-            new() { SupplierId = suppliers[1].Id, ProductId = products[1].Id, PricePerKg = products[1].PricePerKg },
-            new() { SupplierId = suppliers[1].Id, ProductId = products[2].Id, PricePerKg = products[2].PricePerKg},
-            new() { SupplierId = suppliers[2].Id, ProductId = products[4].Id, PricePerKg = products[4].PricePerKg},
-            new() { SupplierId = suppliers[2].Id, ProductId = products[0].Id, PricePerKg = products[0].PricePerKg}
+            new() { SupplierId = suppliers[0].Id, ProductId = products[0].Id, PricePerKg =12 },
+            new() { SupplierId = suppliers[0].Id, ProductId = products[1].Id, PricePerKg =13 },
+            new() { SupplierId = suppliers[1].Id, ProductId = products[1].Id, PricePerKg =14 },
+            new() { SupplierId = suppliers[1].Id, ProductId = products[2].Id, PricePerKg =15 },
+            new() { SupplierId = suppliers[2].Id, ProductId = products[4].Id, PricePerKg =16 },
+            new() { SupplierId = suppliers[2].Id, ProductId = products[0].Id, PricePerKg =17 }
         };
 
         context.SupplierProducts.AddRange(supplierProducts);
