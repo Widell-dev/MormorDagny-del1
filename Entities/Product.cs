@@ -1,6 +1,6 @@
 ﻿namespace MormorDagnys.Entities;
 
-public record Product
+public class Product
 {
     public int Id { get; set; }
     public string ItemNumber { get; set; }

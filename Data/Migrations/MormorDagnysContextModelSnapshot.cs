@@ -59,7 +59,7 @@ namespace MormorDagnys.Data.Migrations
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("MormorDagnys.SupplierProduct", b =>
+            modelBuilder.Entity("MormorDagnys.Entities.SupplierProduct", b =>
                 {
                     b.Property<int>("SupplierId")
                         .HasColumnType("INTEGER");
@@ -77,7 +77,7 @@ namespace MormorDagnys.Data.Migrations
                     b.ToTable("SupplierProducts");
                 });
 
-            modelBuilder.Entity("MormorDagnys.SupplierProduct", b =>
+            modelBuilder.Entity("MormorDagnys.Entities.SupplierProduct", b =>
                 {
                     b.HasOne("MormorDagnys.Entities.Product", "Product")
                         .WithMany("SupplierProducts")

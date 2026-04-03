@@ -7,6 +7,7 @@ namespace MormorDagnys.Data;
 
 public class SeedData
 {
+    
     private static readonly JsonSerializerOptions options = new()
     {
         PropertyNameCaseInsensitive = true
@@ -41,6 +42,9 @@ public class SeedData
 
         context.Products.AddRange(products);
         await context.SaveChangesAsync();
+        Console.WriteLine("PATH: " + Directory.GetCurrentDirectory());
+        Console.WriteLine("FILE EXISTS: " + File.Exists("seed-data/products.json"));
+
     }
     private static async Task SeedSupplierProducts(MormorDagnysContext context)
     {
@@ -51,5 +55,7 @@ public class SeedData
 
         context.SupplierProducts.AddRange(supplierProducts);
         await context.SaveChangesAsync();
+
     }
+    
 }

@@ -5,7 +5,7 @@
 namespace MormorDagnys.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ProductSupplierCleanUp : Migration
+    public partial class Finalmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

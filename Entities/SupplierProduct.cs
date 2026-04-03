@@ -1,8 +1,8 @@
 ﻿using MormorDagnys.Entities;
 
-namespace MormorDagnys;
+namespace MormorDagnys.Entities;
 
-public record SupplierProduct
+public class SupplierProduct
 {
     public int SupplierId { get; set; }
     public Supplier Supplier { get; set; }

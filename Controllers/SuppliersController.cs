@@ -9,7 +9,13 @@ namespace MormorDagnys.Controllers;
     [Route("api/suppliers")]
     public class SuppliersController(MormorDagnysContext context) : ControllerBase
     {
-        [HttpGet("products/{supplierId}")]
+    [HttpGet()]
+    public async Task<ActionResult> ListAllSuppliers()
+    {
+        List<Supplier> suppliers = await context.Suppliers.ToListAsync();
+        return Ok(new { Success = true, StatusCode = 200, Items = suppliers.Count, Data = suppliers });
+    }
+        [HttpGet("{supplierId}/products")]
         public async Task<ActionResult> ListSupplierWithTheirProducts(int supplierId)
     {
         var supplier = await context.Suppliers
@@ -21,6 +27,7 @@ namespace MormorDagnys.Controllers;
             Address = s.Address,
             PhoneNumber = s.PhoneNumber,
             Email = s.Email,
+            
             Products = s.SupplierProducts.Select(sp => new SupplierProductDto
             {
                 ProductId = sp.ProductId,
@@ -33,17 +40,21 @@ namespace MormorDagnys.Controllers;
 
         return Ok(supplier);
     }
+
+
     [HttpPost("{supplierId}/products")]
-    public async Task <ActionResult> AddProductToSupplier(int supplierId, PostSupplierProductDTO dto)
+    public async Task <ActionResult> AddProductToSupplier(PostSupplierProductDTO dto)
     {
-        Supplier supplier = await context.Suppliers.FindAsync(supplierId);
+        Console.WriteLine("DTO TYPE: " + dto?.GetType().FullName);
+
+        Supplier supplier = await context.Suppliers.FindAsync(dto.SupplierId);
         if(supplier is null) return NotFound("Doesnt exist");
 
         Product product = await context.Products.FindAsync(dto.ProductId);
-        if(product is null) return NotFound("Doesnt exist");
+        if(product is null) return NotFound("Doesnt exist bajs");
 
         SupplierProduct existing = await context.SupplierProducts
-            .FirstOrDefaultAsync(sp => sp.SupplierId == supplierId && sp.ProductId == dto.ProductId);
+            .FirstOrDefaultAsync(sp => sp.SupplierId == dto.SupplierId && sp.ProductId == dto.ProductId);
         
         if(existing is not null)
         return BadRequest("It seems like you are trying to add duplicates");
@@ -66,11 +77,11 @@ namespace MormorDagnys.Controllers;
         var supplierproduct = await context.SupplierProducts
             .FirstOrDefaultAsync(sp => sp.SupplierId == supplierId && sp.ProductId == productId);
 
-        if(supplierproduct is null)return NotFound("Produkten finns inte hos leverantören");
+        if(supplierproduct is null)return NotFound("Product not found for this supplier");
 
         supplierproduct.PricePerKg = dto.PricePerKg;
 
         await context.SaveChangesAsync();
-        return Ok("Priset har uppdaterats");
+        return Ok("Price Updated");
     }
     }

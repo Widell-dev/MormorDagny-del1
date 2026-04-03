@@ -10,6 +10,7 @@ namespace MormorDagnys.Controllers;
 
     public class ProductsController(MormorDagnysContext context) : ControllerBase
     {
+    
     [HttpGet()]
     public async Task<ActionResult> ListAllProducts()
     {
@@ -17,6 +18,7 @@ namespace MormorDagnys.Controllers;
         .Select( p => new GetProductsDto
         {
          Id = p.Id,
+         ItemNumber = p.ItemNumber,
          ProductName = p.ProductName,
             Suppliers = p.SupplierProducts
             .Select(sp => new ProductSupplierDto
@@ -39,19 +41,21 @@ namespace MormorDagnys.Controllers;
         {
             Id = p.Id,
             ProductName = p.ProductName,
+            ItemNumber = p.ItemNumber,
             Suppliers = p.SupplierProducts
             .Select(sp => new ProductSupplierDto
             {
                 SupplierId = sp.SupplierId,
                 SupplierName = sp.Supplier.SupplierName,
                 Email = sp.Supplier.Email,
-                PricePerKg = sp.PricePerKg
+                PricePerKg = sp.PricePerKg,
+                
             })
             .ToList()
             
         })
         .SingleOrDefaultAsync();
-        if(product is not null)
+        if(product is null)
         {
             return NotFound("Product not found");
         }

@@ -1,6 +1,7 @@
-namespace MormorDagnys.Entities
-{
-    public record Supplier
+namespace MormorDagnys.Entities;
+
+
+    public class Supplier
     {
         public int Id { get; set; }
         public string SupplierName { get; set; }
@@ -10,4 +11,3 @@ namespace MormorDagnys.Entities
         public string Email { get; set; }
         public List<SupplierProduct> SupplierProducts { get; set; }
     }
-}
