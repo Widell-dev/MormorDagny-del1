@@ -10,8 +10,8 @@ using MormorDagnys.Data;
 namespace MormorDagnys.Data.Migrations
 {
     [DbContext(typeof(MormorDagnysContext))]
-    [Migration("20260326203229_finalmigration")]
-    partial class finalmigration
+    [Migration("20260403172257_ProductSupplierCleanUp")]
+    partial class ProductSupplierCleanUp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,9 @@ namespace MormorDagnys.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ItemNumber")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("TEXT");

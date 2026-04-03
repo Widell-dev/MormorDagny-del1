@@ -14,19 +14,19 @@ namespace MormorDagnys.Controllers;
     public async Task<ActionResult> ListAllProducts()
     {
         var products = await context.Products
-        .Select( p => new
+        .Select( p => new GetProductsDto
         {
-         p.Id,
-         p.ProductName,
-         
-         Suppliers = p.SupplierProducts
-            .Select(c => new GetSupplierProductDto
+         Id = p.Id,
+         ProductName = p.ProductName,
+            Suppliers = p.SupplierProducts
+            .Select(sp => new ProductSupplierDto
             {
-                SupplierId = c.SupplierId,
-                SupplierName = c.Supplier.SupplierName,
-                Email = c.Supplier.Email,
-                PricePerKg = c.PricePerKg
-            })
+                SupplierId = sp.SupplierId,
+                SupplierName = sp.Supplier.SupplierName,
+                Email = sp.Supplier.Email,
+                PricePerKg = sp.PricePerKg
+
+            }).ToList()
         }).ToListAsync();
         return Ok(products);
     }
@@ -35,12 +35,12 @@ namespace MormorDagnys.Controllers;
     {
         var product = await context.Products
         .Where(c => c.Id == id)
-        .Select(p => new ProductDTO
+        .Select(p => new GetProductDto
         {
-            ProductId = p.Id,
+            Id = p.Id,
             ProductName = p.ProductName,
             Suppliers = p.SupplierProducts
-            .Select(sp => new GetSupplierProductDto
+            .Select(sp => new ProductSupplierDto
             {
                 SupplierId = sp.SupplierId,
                 SupplierName = sp.Supplier.SupplierName,
@@ -53,8 +53,8 @@ namespace MormorDagnys.Controllers;
         .SingleOrDefaultAsync();
         if(product is not null)
         {
-            return Ok(new{Success = true, StatusCode = 200, items=1, Data = product});
+            return NotFound("Product not found");
         }
-        return NotFound();
+        return Ok(product);
     }
 }

@@ -22,6 +22,9 @@ namespace MormorDagnys.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ItemNumber")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ProductName")
                         .HasColumnType("TEXT");
 

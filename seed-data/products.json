@@ -1,0 +1,32 @@
+[
+    {
+    "Id": 1,
+    "ItemNumber": "A10",
+    "ProductName": "Vetemjöl",
+    "PricePerKg": 15
+},
+{
+    "Id": 2,
+    "ItemNumber": "A20",
+    "ProductName": "Strösocker",
+    "PricePerKg": 20
+},
+{
+    "Id": 3,
+    "ItemNumber": "A30",
+    "ProductName": "Smör",
+    "PricePerKg": 50
+},
+{
+    "Id": 4,
+    "ItemNumber": "A40",
+    "ProductName": "Bakpulver",
+    "PricePerKg": 30
+},
+{
+    "Id": 5,
+    "ItemNumber": "A50",
+    "ProductName": "Socker",
+    "PricePerKg": 15
+}
+]

@@ -13,31 +13,28 @@ namespace MormorDagnys.Controllers;
         public async Task<ActionResult> ListSupplierWithTheirProducts(int supplierId)
     {
         var supplier = await context.Suppliers
-        .Include(s => s.SupplierProducts)
-            .ThenInclude(sp => sp.Product)
-        .FirstOrDefaultAsync(s => s.Id == supplierId);
-
-        if(supplier is null) return NotFound($"Hitta ingen leverantör");
-
-        var result = new{
-            supplier.Id,
-            supplier.SupplierName,
-            supplier.Address,
-            supplier.PhoneNumber,
-            supplier.Email,
-            Products = supplier.SupplierProducts
-            .Select(p => new
+        .Where(s => s.Id == supplierId)
+        .Select(s => new SupplierDetailsDto
+        {
+            Id = s.Id,
+            SupplierName = s.SupplierName,
+            Address = s.Address,
+            PhoneNumber = s.PhoneNumber,
+            Email = s.Email,
+            Products = s.SupplierProducts.Select(sp => new SupplierProductDto
             {
-                p.ProductId,
-                ProductsName = p.Product.ProductName,
-                SupplierPrice = p.PricePerKg
-            })
-        };
+                ProductId = sp.ProductId,
+                ProductName = sp.Product.ProductName,
+                PricePerKg = sp.PricePerKg
+            }).ToList()
+        }).FirstOrDefaultAsync();
+        if (supplier is null) return NotFound("Supplier not found");
 
-        return Ok(result);
+
+        return Ok(supplier);
     }
     [HttpPost("{supplierId}/products")]
-    public async Task <ActionResult> AddProductToSupplier(int supplierId, SupplierProductDTO dto)
+    public async Task <ActionResult> AddProductToSupplier(int supplierId, PostSupplierProductDTO dto)
     {
         Supplier supplier = await context.Suppliers.FindAsync(supplierId);
         if(supplier is null) return NotFound("Doesnt exist");
@@ -61,10 +58,10 @@ namespace MormorDagnys.Controllers;
         context.SupplierProducts.Add(sp);
         await context.SaveChangesAsync();
 
-        return Ok();
+        return Ok("Product added to supplier");
     }
     [HttpPatch("{supplierId}/products/{productId}")]
-    public async Task <ActionResult> UpdateSupplierProductPrice(int supplierId, int productId, UpdateSupplierProductPriceDto dto)
+    public async Task <ActionResult> UpdateSupplierProductPrice(int supplierId, int productId, PutSupplierProductDto dto)
     {
         var supplierproduct = await context.SupplierProducts
             .FirstOrDefaultAsync(sp => sp.SupplierId == supplierId && sp.ProductId == productId);

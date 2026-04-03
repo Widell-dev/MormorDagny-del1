@@ -1,0 +1,10 @@
+[
+  { "SupplierId": 1, "ProductId": 1, "PricePerKg": 15 },
+  { "SupplierId": 1, "ProductId": 3, "PricePerKg": 50 },
+
+  { "SupplierId": 2, "ProductId": 2, "PricePerKg": 20 },
+  { "SupplierId": 2, "ProductId": 5, "PricePerKg": 15 },
+
+  { "SupplierId": 3, "ProductId": 4, "PricePerKg": 30 },
+  { "SupplierId": 3, "ProductId": 5, "PricePerKg": 15 }
+]

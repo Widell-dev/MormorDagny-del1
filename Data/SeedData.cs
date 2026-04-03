@@ -1,71 +1,53 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MormorDagnys.Controllers;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using MormorDagnys.Data;
 using MormorDagnys.Entities;
 
-namespace MormorDagnys;
+namespace MormorDagnys.Data;
 
 public class SeedData
 {
+    private static readonly JsonSerializerOptions options = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
     public async Task InitDb(WebApplication app)
     {
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<MormorDagnysContext>();
-        await SeedDataBase(context);
-    }
 
-    private async Task SeedDataBase(MormorDagnysContext context)
-    {
         await context.Database.MigrateAsync();
 
         await SeedSuppliers(context);
         await SeedProducts(context);
         await SeedSupplierProducts(context);
     }
+
+    
     private static async Task SeedSuppliers(MormorDagnysContext context)
     {
-        if (context.Suppliers.Any())
-        return;
-        var suppliers = new List<Supplier>
-        {
-            new(){SupplierName = "Hasses Bakkomponenter", ContactPerson = "Hasse", Address = "Mandelmassagatan 12",  Email = "Hasse@Hassesbk.se", PhoneNumber = "078323489324"},
-            new(){SupplierName = "Lasses Bakkomponenter", ContactPerson = "Lasse", Address = "Mandelmassagatan 13", Email = "Lasse@Lassesbk.se", PhoneNumber = "078323489325"},
-            new(){SupplierName = "Frasses Bakkomponenter", ContactPerson = "Frasse", Address = "Mandelmassagatan 14", Email = "Frasse@Lassesbk.se", PhoneNumber = "078323489326"}
-        };
+        if(context.Suppliers.Any()) return;
+        var json = await File.ReadAllTextAsync("seed-data/suppliers.json");
+        var suppliers = JsonSerializer.Deserialize<List<Supplier>>(json, options);
+
         context.Suppliers.AddRange(suppliers);
         await context.SaveChangesAsync();
     }
     private static async Task SeedProducts(MormorDagnysContext context)
     {
-        if(context.Products.Any())
-        return;
-        var products = new List<Product>
-        {
-            new() {ProductName = "Mjöl"},
-            new() {ProductName = "Socker"},
-            new() {ProductName = "Bakpulver"},
-            new() {ProductName = "Smör"},
-            new() {ProductName = "Vaniljsocker"},
-        };
+        if(context.Products.Any()) return;
+        var json = await File.ReadAllTextAsync("seed-data/products.json");
+        var products = JsonSerializer.Deserialize<List<Product>>(json, options);
+
         context.Products.AddRange(products);
         await context.SaveChangesAsync();
     }
     private static async Task SeedSupplierProducts(MormorDagnysContext context)
     {
-        if (context.SupplierProducts.Any()) return;
+        if(context.SupplierProducts.Any()) return;
 
-        var suppliers = await context.Suppliers.OrderBy(s => s.Id ).ToListAsync();
-        var products = await context.Products.OrderBy(p => p.Id).ToListAsync();
-
-        var supplierProducts = new List<SupplierProduct>
-        {
-            new() { SupplierId = suppliers[0].Id, ProductId = products[0].Id, PricePerKg =12 },
-            new() { SupplierId = suppliers[0].Id, ProductId = products[1].Id, PricePerKg =13 },
-            new() { SupplierId = suppliers[1].Id, ProductId = products[1].Id, PricePerKg =14 },
-            new() { SupplierId = suppliers[1].Id, ProductId = products[2].Id, PricePerKg =15 },
-            new() { SupplierId = suppliers[2].Id, ProductId = products[4].Id, PricePerKg =16 },
-            new() { SupplierId = suppliers[2].Id, ProductId = products[0].Id, PricePerKg =17 }
-        };
+        var json = await File.ReadAllTextAsync("seed-data/supplierProducts.json");
+        var supplierProducts = JsonSerializer.Deserialize<List<SupplierProduct>>(json, options);
 
         context.SupplierProducts.AddRange(supplierProducts);
         await context.SaveChangesAsync();

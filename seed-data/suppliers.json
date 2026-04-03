@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1,
+    "SupplierName": "Hasses Bakkomponenter",
+    "ContactPerson": "Hasse",
+    "Address": "Mandelmassagatan 12",
+    "Email": "Hasse@Hassesbk.se",
+    "PhoneNumber": "078323489324"
+  },
+  {
+    "Id": 2,
+    "SupplierName": "Lasses Bakkomponenter",
+    "ContactPerson": "Lasse",
+    "Address": "Mandelmassagatan 13",
+    "Email": "Lasse@Lassesbk.se",
+    "PhoneNumber": "078323489325"
+  },
+  {
+    "Id": 3,
+    "SupplierName": "Frasses Bakkomponenter",
+    "ContactPerson": "Frasse",
+    "Address": "Mandelmassagatan 14",
+    "Email": "Frasse@Frassesbk.se",
+    "PhoneNumber": "078323489326"
+  }
+]
