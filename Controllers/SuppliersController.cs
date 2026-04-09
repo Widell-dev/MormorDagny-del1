@@ -5,7 +5,8 @@ using MormorDagnys.Data;
 using MormorDagnys.DTOs;
 
 namespace MormorDagnys.Controllers;
-
+    
+    [ApiController]
     [Route("api/suppliers")]
     public class SuppliersController(MormorDagnysContext context) : ControllerBase
     {
@@ -43,26 +44,24 @@ namespace MormorDagnys.Controllers;
 
 
     [HttpPost("{supplierId}/products")]
-    public async Task <ActionResult> AddProductToSupplier(PostSupplierProductDTO dto)
+    public async Task<ActionResult> AddProductToSupplier(PostSupplierProductDTO dto,int supplierId)
     {
-        Console.WriteLine("DTO TYPE: " + dto?.GetType().FullName);
-
-        Supplier supplier = await context.Suppliers.FindAsync(dto.SupplierId);
-        if(supplier is null) return NotFound("Doesnt exist");
+        Supplier supplier = await context.Suppliers.FindAsync(supplierId);
+        if (supplier is null) return NotFound("Supplier not found");
 
         Product product = await context.Products.FindAsync(dto.ProductId);
-        if(product is null) return NotFound("Doesnt exist bajs");
+        if (product is null) return NotFound("Product not found");
 
-        SupplierProduct existing = await context.SupplierProducts
-            .FirstOrDefaultAsync(sp => sp.SupplierId == dto.SupplierId && sp.ProductId == dto.ProductId);
-        
-        if(existing is not null)
-        return BadRequest("It seems like you are trying to add duplicates");
+        var existing = await context.SupplierProducts
+            .FirstOrDefaultAsync(sp => sp.SupplierId == supplierId && sp.ProductId == dto.ProductId);
+
+        if (existing is not null)
+            return BadRequest("It seems like you are trying to add duplicates");
 
         SupplierProduct sp = new()
         {
-            Supplier = supplier,
-            Product = product,
+            SupplierId = supplierId,
+            ProductId = dto.ProductId,
             PricePerKg = dto.PricePerKg
         };
 
@@ -71,6 +70,7 @@ namespace MormorDagnys.Controllers;
 
         return Ok("Product added to supplier");
     }
+
     [HttpPatch("{supplierId}/products/{productId}")]
     public async Task <ActionResult> UpdateSupplierProductPrice(int supplierId, int productId, PutSupplierProductDto dto)
     {

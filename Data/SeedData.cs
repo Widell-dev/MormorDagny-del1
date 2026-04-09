@@ -42,8 +42,6 @@ public class SeedData
 
         context.Products.AddRange(products);
         await context.SaveChangesAsync();
-        Console.WriteLine("PATH: " + Directory.GetCurrentDirectory());
-        Console.WriteLine("FILE EXISTS: " + File.Exists("seed-data/products.json"));
 
     }
     private static async Task SeedSupplierProducts(MormorDagnysContext context)
